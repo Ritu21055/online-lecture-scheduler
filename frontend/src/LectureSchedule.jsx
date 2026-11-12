@@ -3,7 +3,6 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000";
 
-// Common authentication headers
 const getConfig = (token) => ({
   headers: {
     Authorization: `Bearer ${token}`,
@@ -23,7 +22,6 @@ function LectureSchedule({ token }) {
   const [message, setMessage] = useState("");
   const [loadError, setLoadError] = useState("");
 
-  // Form data
   const [formData, setFormData] = useState({
     course: "",
     batchName: "",
@@ -31,14 +29,12 @@ function LectureSchedule({ token }) {
     lectureDate: "",
   });
 
-  // Load courses, instructors and lectures
   useEffect(() => {
     let isMounted = true;
 
     const loadData = async () => {
       const config = getConfig(token);
 
-      // Load courses
       try {
         const response = await axios.get(`${API_URL}/api/courses`, config);
 
@@ -53,7 +49,6 @@ function LectureSchedule({ token }) {
         }
       }
 
-      // Load instructors
       try {
         const response = await axios.get(`${API_URL}/api/instructors`, config);
 
@@ -71,7 +66,6 @@ function LectureSchedule({ token }) {
         }
       }
 
-      // Load scheduled lectures
       try {
         const response = await axios.get(`${API_URL}/api/lectures`, config);
 
@@ -98,7 +92,6 @@ function LectureSchedule({ token }) {
     };
   }, [token]);
 
-  // Refresh lecture list after creating a lecture
   const refreshLectures = async () => {
     try {
       const response = await axios.get(
@@ -114,7 +107,6 @@ function LectureSchedule({ token }) {
     }
   };
 
-  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -127,7 +119,6 @@ function LectureSchedule({ token }) {
     setMessage("");
   };
 
-  // Create a new lecture
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -144,7 +135,6 @@ function LectureSchedule({ token }) {
 
       setMessage("Lecture scheduled successfully!");
 
-      // Clear form after successful submission
       setFormData({
         course: "",
         batchName: "",
@@ -154,7 +144,6 @@ function LectureSchedule({ token }) {
 
       setShowForm(false);
 
-      // Refresh table
       await refreshLectures();
     } catch (err) {
       console.log("Create Lecture Error:", err.response?.data || err.message);
@@ -177,7 +166,6 @@ function LectureSchedule({ token }) {
     }
   };
 
-  // Format date
   const formatDate = (date) => {
     if (!date) return "-";
 
@@ -190,7 +178,6 @@ function LectureSchedule({ token }) {
 
   return (
     <div>
-      {/* Page Header */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h4 className="section-title">Lecture Schedule</h4>
@@ -213,7 +200,6 @@ function LectureSchedule({ token }) {
         </button>
       </div>
 
-      {/* Loading Error */}
       {loadError && (
         <div className="alert alert-warning">
           <i className="bi bi-exclamation-circle me-2"></i>
@@ -221,7 +207,6 @@ function LectureSchedule({ token }) {
         </div>
       )}
 
-      {/* Success Message */}
       {message && (
         <div className="alert alert-success">
           <i className="bi bi-check-circle me-2"></i>
@@ -229,7 +214,6 @@ function LectureSchedule({ token }) {
         </div>
       )}
 
-      {/* Form Error */}
       {error && (
         <div className="alert alert-danger">
           <i className="bi bi-exclamation-circle me-2"></i>
@@ -237,7 +221,6 @@ function LectureSchedule({ token }) {
         </div>
       )}
 
-      {/* Schedule Lecture Form */}
       {showForm && (
         <div className="custom-card mb-4">
           <div className="mb-4">
@@ -276,7 +259,6 @@ function LectureSchedule({ token }) {
                 </select>
               </div>
 
-              {/* Batch Name */}
               <div className="col-md-6">
                 <label className="form-label">Batch Name</label>
 
@@ -291,7 +273,6 @@ function LectureSchedule({ token }) {
                 />
               </div>
 
-              {/* Instructor Dropdown */}
               <div className="col-md-6">
                 <label className="form-label">Select Instructor</label>
 
@@ -317,7 +298,6 @@ function LectureSchedule({ token }) {
                 </select>
               </div>
 
-              {/* Lecture Date */}
               <div className="col-md-6">
                 <label className="form-label">Lecture Date</label>
 
@@ -332,13 +312,11 @@ function LectureSchedule({ token }) {
               </div>
             </div>
 
-            {/* Scheduling Information */}
             <div className="schedule-info mt-3">
               <i className="bi bi-info-circle me-2"></i>
               An instructor can only be assigned one lecture per day.
             </div>
 
-            {/* Buttons */}
             <div className="d-flex gap-2 mt-4">
               <button
                 type="submit"
@@ -365,7 +343,6 @@ function LectureSchedule({ token }) {
         </div>
       )}
 
-      {/* All Scheduled Lectures */}
       <div className="custom-card">
         <div className="section-header">
           <div>

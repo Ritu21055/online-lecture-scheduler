@@ -10,7 +10,6 @@ import InstructorDashboard from "./InstructorDashboard.jsx";
 const API_URL = import.meta.env.VITE_API_URL;
 
 function App() {
-  // Authentication
   const [token, setToken] = useState(localStorage.getItem("token"));
 
   const [user, setUser] = useState(() => {
@@ -23,14 +22,12 @@ function App() {
 
   const [activePage, setActivePage] = useState("Dashboard");
 
-  // Database data
   const [courses, setCourses] = useState([]);
   const [instructors, setInstructors] = useState([]);
   const [lectures, setLectures] = useState([]);
 
   const [dashboardLoading, setDashboardLoading] = useState(true);
 
-  // Login handler
   const handleLogin = (data) => {
     localStorage.setItem("token", data.token);
     localStorage.setItem("user", JSON.stringify(data.user));
@@ -40,7 +37,6 @@ function App() {
     setActivePage("Dashboard");
   };
 
-  // Logout handler
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -50,7 +46,6 @@ function App() {
     setActivePage("Dashboard");
   };
 
-  // Load dashboard data from backend
   useEffect(() => {
     if (!token || user?.role !== "admin") {
       return;
@@ -67,7 +62,6 @@ function App() {
     const loadDashboardData = async () => {
       setDashboardLoading(true);
 
-      // Get courses
       try {
         const response = await axios.get(`${API_URL}/api/courses`, config);
 
@@ -78,7 +72,6 @@ function App() {
         console.log("Courses Error:", error.response?.data || error.message);
       }
 
-      // Get instructors
       try {
         const response = await axios.get(`${API_URL}/api/instructors`, config);
 
@@ -92,7 +85,6 @@ function App() {
         );
       }
 
-      // Get lectures
       try {
         const response = await axios.get(`${API_URL}/api/lectures`, config);
 
@@ -115,19 +107,16 @@ function App() {
     };
   }, [token, user?.role]);
 
-  // Show Login page
   if (!token) {
     return <Login onLogin={handleLogin} />;
   }
 
-  // Show Instructor dashboard
   if (user?.role === "instructor") {
     return (
       <InstructorDashboard token={token} user={user} onLogout={handleLogout} />
     );
   }
 
-  // Sidebar menu
   const menuItems = [
     { name: "Dashboard", icon: "bi-grid-1x2" },
     { name: "Courses", icon: "bi-book" },
@@ -135,7 +124,6 @@ function App() {
     { name: "Lecture Schedule", icon: "bi-calendar3" },
   ];
 
-  // Find upcoming lectures
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -147,7 +135,6 @@ function App() {
     })
     .sort((a, b) => new Date(a.lectureDate) - new Date(b.lectureDate));
 
-  // Dashboard statistics
   const stats = [
     {
       title: "Total Courses",
@@ -175,7 +162,6 @@ function App() {
     },
   ];
 
-  // Format dates
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString("en-IN", {
       day: "2-digit",
@@ -184,12 +170,10 @@ function App() {
     });
   };
 
-  // User initials
   const initials = user?.name ? user.name.charAt(0).toUpperCase() : "A";
 
   return (
     <div className="app-layout">
-      {/* Sidebar */}
       <aside className="sidebar">
         <div className="brand">
           <div className="brand-icon">
@@ -215,7 +199,6 @@ function App() {
           ))}
         </div>
 
-        {/* Profile */}
         <div className="sidebar-bottom">
           <div className="profile-avatar">{initials}</div>
 
@@ -226,9 +209,7 @@ function App() {
         </div>
       </aside>
 
-      {/* Main Area */}
       <main className="main-area">
-        {/* Topbar */}
         <header className="topbar">
           <div>
             <p className="breadcrumb-text">Workspace / {activePage}</p>
@@ -247,9 +228,7 @@ function App() {
           </div>
         </header>
 
-        {/* Page Content */}
         <div className="dashboard-content">
-          {/* Dashboard */}
           {activePage === "Dashboard" && (
             <>
               <div className="welcome-section">
@@ -268,7 +247,6 @@ function App() {
                 </button>
               </div>
 
-              {/* Statistics */}
               <div className="row g-3 mb-4">
                 {stats.map((item) => (
                   <div className="col-xl-3 col-md-6" key={item.title}>
@@ -285,7 +263,6 @@ function App() {
                 ))}
               </div>
 
-              {/* Upcoming Lectures */}
               <div className="custom-card schedule-card">
                 <div className="section-header">
                   <div>
@@ -353,13 +330,10 @@ function App() {
             </>
           )}
 
-          {/* Courses */}
           {activePage === "Courses" && <Courses token={token} />}
 
-          {/* Instructors */}
           {activePage === "Instructors" && <Instructors token={token} />}
 
-          {/* Lecture Schedule */}
           {activePage === "Lecture Schedule" && (
             <LectureSchedule token={token} />
           )}

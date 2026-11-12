@@ -8,7 +8,6 @@ function InstructorDashboard({ token, user, onLogout }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Load only the logged-in instructor's lectures
   useEffect(() => {
     let isMounted = true;
 
@@ -48,7 +47,6 @@ function InstructorDashboard({ token, user, onLogout }) {
     };
   }, [token]);
 
-  // Format date
   const formatDate = (date) => {
     if (!date) return "-";
 
@@ -59,7 +57,6 @@ function InstructorDashboard({ token, user, onLogout }) {
     });
   };
 
-  // Today's date for welcome section
   const today = new Date().toLocaleDateString("en-IN", {
     day: "numeric",
     month: "long",
@@ -68,7 +65,6 @@ function InstructorDashboard({ token, user, onLogout }) {
 
   return (
     <div className="instructor-page">
-      {/* Header */}
       <header className="instructor-topbar">
         <div className="brand">
           <div className="brand-icon">
@@ -94,7 +90,6 @@ function InstructorDashboard({ token, user, onLogout }) {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="instructor-content">
         <div className="instructor-welcome">
           <div>
@@ -108,7 +103,6 @@ function InstructorDashboard({ token, user, onLogout }) {
           </div>
         </div>
 
-        {/* Summary Cards */}
         <div className="row g-3 mb-4">
           <div className="col-md-6">
             <div className="instructor-stat-card">
@@ -131,7 +125,6 @@ function InstructorDashboard({ token, user, onLogout }) {
           </div>
         </div>
 
-        {/* Lecture List */}
         <div className="custom-card">
           <div className="section-header">
             <div>

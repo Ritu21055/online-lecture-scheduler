@@ -36,7 +36,6 @@ function Instructors({ token }) {
     loadInstructors();
   }, [token]);
 
-  // Handle input changes
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -44,7 +43,6 @@ function Instructors({ token }) {
     });
   };
 
-  // Add new instructor
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -81,7 +79,6 @@ function Instructors({ token }) {
 
   return (
     <div>
-      {/* Page Header */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h4 className="section-title">Instructors</h4>
@@ -101,12 +98,10 @@ function Instructors({ token }) {
         </button>
       </div>
 
-      {/* Success and Error Messages */}
       {message && <div className="alert alert-success">{message}</div>}
 
       {error && <div className="alert alert-danger">{error}</div>}
 
-      {/* Add Instructor Form */}
       {showForm && (
         <div className="custom-card mb-4">
           <h5 className="mb-3">Add New Instructor</h5>
@@ -171,7 +166,6 @@ function Instructors({ token }) {
         </div>
       )}
 
-      {/* Instructor List */}
       <div className="custom-card">
         <div className="section-header">
           <div>

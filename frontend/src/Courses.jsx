@@ -11,7 +11,6 @@ function Courses({ token }) {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  // Form data
   const [formData, setFormData] = useState({
     name: "",
     level: "",
@@ -19,7 +18,6 @@ function Courses({ token }) {
     image: null,
   });
 
-  // Get courses from backend
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -41,7 +39,6 @@ function Courses({ token }) {
     fetchCourses();
   }, [token]);
 
-  // Handle form inputs
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
@@ -51,7 +48,6 @@ function Courses({ token }) {
     });
   };
 
-  // Add course
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -88,7 +84,6 @@ function Courses({ token }) {
 
       setShowForm(false);
 
-      // Refresh courses list
       const response = await axios.get(`${API_URL}/api/courses`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -105,7 +100,6 @@ function Courses({ token }) {
 
   return (
     <div>
-      {/* Page Header */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h4 className="section-title">Courses</h4>
@@ -127,12 +121,10 @@ function Courses({ token }) {
         </button>
       </div>
 
-      {/* Messages */}
       {message && <div className="alert alert-success">{message}</div>}
 
       {error && <div className="alert alert-danger">{error}</div>}
 
-      {/* Add Course Form */}
       {showForm && (
         <div className="custom-card mb-4">
           <h5 className="mb-1">Add New Course</h5>
@@ -219,14 +211,12 @@ function Courses({ token }) {
         </div>
       )}
 
-      {/* Course List Header */}
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h5 className="course-list-title">All Courses</h5>
 
         <span className="badge text-bg-light">{courses.length} Courses</span>
       </div>
 
-      {/* Course Cards */}
       {loading ? (
         <div className="custom-card text-center py-5">Loading courses...</div>
       ) : courses.length === 0 ? (
@@ -242,7 +232,7 @@ function Courses({ token }) {
               <div className="course-card">
                 {course.image ? (
                   <img
-                    src={`${API_URL}${course.image}`}
+                    src={course.image}
                     alt={course.name}
                     className="course-card-image"
                   />
