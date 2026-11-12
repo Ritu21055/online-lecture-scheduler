@@ -9,8 +9,6 @@ CourseDesk is a MERN stack application for managing courses, instructors, and le
 | Frontend    | https://coursedesk-phi.vercel.app/                  |
 | Backend API | https://online-lecture-scheduler-zq5m.onrender.com/ |
 
-> Demo login credentials should be shared separately with the reviewer. Do not publish passwords or production secrets in this repository.
-
 ## Features
 
 ### Admin
@@ -19,7 +17,7 @@ CourseDesk is a MERN stack application for managing courses, instructors, and le
 - View dashboard statistics and upcoming lectures.
 - Add and view courses, including course images.
 - Upload course images to Cloudinary.
-- Add and view instructor accounts.
+- Add and manage instructor accounts.
 - Schedule lectures by selecting a course, batch name, instructor, and date.
 - View all scheduled lectures.
 - Prevent an instructor from being assigned more than one lecture on the same calendar date.
@@ -34,11 +32,12 @@ CourseDesk is a MERN stack application for managing courses, instructors, and le
 
 **Frontend**
 
-- React
+- React.js
 - Vite
 - Bootstrap 5
 - Bootstrap Icons
 - Axios
+- JavaScript
 
 **Backend**
 
@@ -77,6 +76,7 @@ online-lecture-scheduler/
 │   │   ├── courseRoutes.js
 │   │   ├── instructorRoutes.js
 │   │   └── lectureRoutes.js
+│   ├── uploads/
 │   ├── .env.example
 │   ├── package.json
 │   ├── seed.js
@@ -107,7 +107,7 @@ online-lecture-scheduler/
 
 ## Installation and Local Setup
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
 git clone <YOUR_GITHUB_REPOSITORY_URL>
@@ -161,7 +161,7 @@ From the `backend` directory, run:
 npm run seed
 ```
 
-The seed script creates the demo account(s) configured in `seed.js` and skips accounts that already exist. Use the credentials configured for your seed setup. If the accounts already exist, use those existing credentials.
+The seed script creates the demo account(s) configured in `seed.js` and skips accounts that already exist. Use the credentials configured for your seed setup.
 
 ### 4. Configure the Frontend
 
@@ -184,7 +184,9 @@ Start the frontend:
 npm run dev
 ```
 
-Open the local Vite URL shown in the terminal (commonly `http://localhost:5173`). Keep both the frontend and backend development servers running while testing.
+Open the local Vite URL shown in the terminal (commonly `http://localhost:5173`).
+
+Keep both the frontend and backend development servers running while testing.
 
 > Vite environment variables are read when the development server starts. Restart the frontend after changing `frontend/.env`.
 
@@ -192,7 +194,7 @@ Open the local Vite URL shown in the terminal (commonly `http://localhost:5173`)
 
 Course images are uploaded to Cloudinary instead of being stored on the backend server's local filesystem.
 
-The upload flow works as follows:
+The image upload process works as follows:
 
 1. The admin selects an image while creating a course.
 2. The frontend sends the course details and image as `multipart/form-data`.
@@ -215,7 +217,7 @@ Cloudinary provides remote image hosting, so images are not dependent on the tem
 
 ## API Reference
 
-All protected routes require this HTTP header:
+All protected routes require the following HTTP header:
 
 ```text
 Authorization: Bearer <JWT_TOKEN>
@@ -313,17 +315,27 @@ This prevents an instructor from being assigned multiple lectures on the same ca
 
 The frontend is deployed on Vercel.
 
+**Frontend URL:**
+
+https://coursedesk-phi.vercel.app/
+
 Set the following environment variable in the Vercel project:
 
 ```env
 VITE_API_URL=https://online-lecture-scheduler-zq5m.onrender.com
 ```
 
-Configure the Vercel project to use the `frontend` directory as its root directory and redeploy after changing environment variables.
+Configure the Vercel project to use the `frontend` directory as its root directory.
+
+Redeploy the frontend after changing environment variables.
 
 ### Backend – Render
 
 The backend is deployed on Render.
+
+**Backend URL:**
+
+https://online-lecture-scheduler-zq5m.onrender.com/
 
 Configure the Render service to use the `backend` directory as its root directory.
 
@@ -348,4 +360,49 @@ Set `PORT` only if required by the hosting provider. Render commonly provides it
 
 Configure backend CORS to allow the deployed Vercel frontend origin.
 
-Do not upload `.env` files or expose database connection strings, JWT secrets, or Cloudinary API
+Do not upload `.env` files or expose database connection strings, JWT secrets, or Cloudinary API secrets in GitHub or this README.
+
+## Demo and Submission Details
+
+| Item                | Details                                                                            |
+| ------------------- | ---------------------------------------------------------------------------------- |
+| Hosted Application  | https://coursedesk-phi.vercel.app/                                                 |
+| Backend API         | https://online-lecture-scheduler-zq5m.onrender.com/                                |
+| Admin Email         | Add your demo admin email                                                          |
+| Admin Password      | Share securely with the reviewer                                                   |
+| Instructor Email    | Add your demo instructor email                                                     |
+| Instructor Password | Share securely with the reviewer                                                   |
+| Screen Recording    | https://drive.google.com/file/d/1IKGQBakodUJJaNScCi97q_XSlB_BABd8/view?usp=sharing |
+| Source Code         | Add your GitHub repository URL                                                     |
+| Database Dump       | Add your database dump link                                                        |
+
+Share dedicated reviewer credentials separately and securely.
+
+Never include personal account passwords, production secrets, JWT secrets, MongoDB connection strings, or Cloudinary API secrets in this document or a public repository.
+
+## Testing Checklist
+
+- [ ] Admin can log in.
+- [ ] Instructor can log in.
+- [ ] Admin can add and view instructors.
+- [ ] Admin can add and view courses.
+- [ ] Course images upload to Cloudinary and display correctly after refresh.
+- [ ] Admin can schedule a lecture for a course, batch, instructor, and date.
+- [ ] A second lecture for the same instructor on the same date is rejected with a conflict response.
+- [ ] Admin can view all scheduled lectures.
+- [ ] An instructor can view only their own assigned lectures.
+- [ ] Logout returns the user to the login page.
+- [ ] Hosted frontend and backend work with the deployed database and Cloudinary image storage.
+
+## Security Notes
+
+- Keep backend and frontend `.env` files out of version control.
+- Store passwords as hashes; never store or return plain-text passwords.
+- Use a strong, unique `JWT_SECRET` in production.
+- Keep Cloudinary API credentials private.
+- Share only dedicated reviewer/demo credentials.
+- Restrict production CORS to the deployed frontend origin where practical.
+
+---
+
+**CourseDesk** — Online Lecture Scheduling System
