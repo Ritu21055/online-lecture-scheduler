@@ -18,6 +18,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/instructors", instructorRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/lectures", lectureRoutes);
+app.get("/", (req, res) => {
+  res.status(200).send("CourseDesk API is running successfully!");
+});
 app.use("/uploads", express.static(path.resolve("uploads")));
 
 mongoose
