@@ -2,19 +2,16 @@ import Lecture from "../models/Lecture.js";
 import Course from "../models/Course.js";
 import User from "../models/User.js";
 
-// Create a new lecture
 export const createLecture = async (req, res) => {
   try {
     const { course, batchName, instructor, lectureDate } = req.body;
 
-    // Check required fields
     if (!course || !batchName || !instructor || !lectureDate) {
       return res.status(400).json({
         message: "All fields are required",
       });
     }
 
-    // Check if course exists
     const courseExists = await Course.findById(course);
 
     if (!courseExists) {
@@ -23,7 +20,6 @@ export const createLecture = async (req, res) => {
       });
     }
 
-    // Check if instructor exists
     const instructorExists = await User.findOne({
       _id: instructor,
       role: "instructor",
@@ -35,7 +31,6 @@ export const createLecture = async (req, res) => {
       });
     }
 
-    // Validate lecture date
     const lectureDay = String(lectureDate).slice(0, 10);
 
     if (!/^\d{4}-\d{2}-\d{2}$/.test(lectureDay)) {
@@ -55,7 +50,6 @@ export const createLecture = async (req, res) => {
       });
     }
 
-    // Check whether instructor already has a lecture on this date
     const existingLecture = await Lecture.findOne({
       instructor,
       lectureDay,
@@ -67,7 +61,6 @@ export const createLecture = async (req, res) => {
       });
     }
 
-    // Save lecture in database
     const lecture = await Lecture.create({
       course,
       batchName,
@@ -83,7 +76,6 @@ export const createLecture = async (req, res) => {
   } catch (error) {
     console.error("Create Lecture Error:", error);
 
-    // Handle duplicate database entries
     if (error.code === 11000) {
       return res.status(409).json({
         message: "This instructor already has a lecture on this date",
@@ -97,7 +89,6 @@ export const createLecture = async (req, res) => {
   }
 };
 
-// Get all lectures (Admin)
 export const getLectures = async (req, res) => {
   try {
     const lectures = await Lecture.find()
@@ -116,7 +107,6 @@ export const getLectures = async (req, res) => {
   }
 };
 
-// Get lectures assigned to logged-in instructor
 export const getMyLectures = async (req, res) => {
   try {
     const instructorId = req.user.userId;

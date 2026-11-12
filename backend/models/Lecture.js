@@ -35,7 +35,6 @@ const lectureSchema = new mongoose.Schema(
   },
 );
 
-// Prevent an instructor from having multiple lectures on the same date
 lectureSchema.index({ instructor: 1, lectureDay: 1 }, { unique: true });
 
 const Lecture = mongoose.model("Lecture", lectureSchema);
