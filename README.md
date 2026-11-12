@@ -1,55 +1,46 @@
 # CourseDesk – Online Lecture Scheduling System
 
-CourseDesk is a MERN stack-based online lecture scheduling and course management application. It helps administrators manage courses, instructors, and lecture schedules from a centralized dashboard. Instructors can log in separately and view their assigned lectures.
+CourseDesk is a MERN stack application for managing courses, instructors, and lecture schedules. Administrators can create courses, register instructors, and schedule lecture batches. Instructors can sign in to view the lectures assigned to their accounts.
 
-The application includes role-based authentication and prevents an instructor from being assigned multiple lectures on the same date.
+## Live Demo
 
----
+| Service     | URL                                                 |
+| ----------- | --------------------------------------------------- |
+| Frontend    | https://coursedesk-phi.vercel.app/                  |
+| Backend API | https://online-lecture-scheduler-zq5m.onrender.com/ |
+
+> Demo login credentials should be shared separately with the reviewer. Do not publish passwords or production secrets in this repository.
 
 ## Features
 
-### Admin Dashboard
+### Admin
 
-- Secure admin login using JWT authentication.
-- Dashboard with course, instructor, and lecture statistics.
-- View and manage registered instructors.
-- Add new instructors with login credentials.
-- Create courses with name, level, description, and image.
-- Schedule lectures by selecting courses, batches, instructors, and dates.
+- Secure login using JSON Web Tokens (JWT).
+- View dashboard statistics and upcoming lectures.
+- Add and view courses, including course images.
+- Upload course images to Cloudinary.
+- Add and view instructor accounts.
+- Schedule lectures by selecting a course, batch name, instructor, and date.
 - View all scheduled lectures.
-- Prevent duplicate lecture assignments for the same instructor on the same date.
+- Prevent an instructor from being assigned more than one lecture on the same calendar date.
 
-### Instructor Dashboard
+### Instructor
 
-- Separate instructor login.
-- View only lectures assigned to the logged-in instructor.
-- View course name, course level, batch name, and lecture date.
-- Secure logout functionality.
-
-### Authentication and Security
-
-- Password hashing using bcryptjs.
-- JWT-based authentication.
-- Role-based authorization for admin and instructor routes.
-- Protected API endpoints.
-- Passwords are excluded from user listing responses.
-
----
+- Secure login using an instructor account.
+- View only the lectures assigned to the logged-in instructor.
+- View course, batch name, and lecture date for each assigned lecture.
 
 ## Technology Stack
 
-### Frontend
+**Frontend**
 
-- React.js
+- React
 - Vite
-- JavaScript
 - Bootstrap 5
 - Bootstrap Icons
-- Custom CSS
 - Axios
-- React Router DOM
 
-### Backend
+**Backend**
 
 - Node.js
 - Express.js
@@ -58,153 +49,130 @@ The application includes role-based authentication and prevents an instructor fr
 - JSON Web Token (JWT)
 - bcryptjs
 - Multer
+- Cloudinary
+- multer-storage-cloudinary
 - dotenv
-- CORS
-
----
+- cors
 
 ## Project Structure
 
 ```text
 online-lecture-scheduler/
-│
-├── README.md
-│
 ├── backend/
 │   ├── controllers/
 │   │   ├── authController.js
 │   │   ├── courseController.js
 │   │   ├── instructorController.js
 │   │   └── lectureController.js
-│   │
 │   ├── middleware/
 │   │   ├── authMiddleware.js
 │   │   ├── roleMiddleware.js
 │   │   └── uploadMiddleware.js
-│   │
 │   ├── models/
 │   │   ├── User.js
 │   │   ├── Course.js
 │   │   └── Lecture.js
-│   │
 │   ├── routes/
 │   │   ├── authRoutes.js
 │   │   ├── courseRoutes.js
 │   │   ├── instructorRoutes.js
 │   │   └── lectureRoutes.js
-│   │
-│   ├── uploads/
-│   ├── server.js
-│   ├── seed.js
+│   ├── .env.example
 │   ├── package.json
-│   └── .env
-│
-└── frontend/
-    ├── src/
-    │   ├── App.jsx
-    │   ├── Login.jsx
-    │   ├── Courses.jsx
-    │   ├── Instructor.jsx
-    │   ├── LectureSchedule.jsx
-    │   ├── InstructorDashboard.jsx
-    │   ├── main.jsx
-    │   └── index.css
-    │
-    ├── public/
-    ├── index.html
-    ├── package.json
-    └── .env
+│   ├── seed.js
+│   └── server.js
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── Login.jsx
+│   │   ├── Courses.jsx
+│   │   ├── Instructor.jsx
+│   │   ├── LectureSchedule.jsx
+│   │   ├── InstructorDashboard.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── .env.example
+│   ├── package.json
+│   └── index.html
+├── .gitignore
+└── README.md
 ```
 
----
+## Prerequisites
 
-## Installation and Setup
-
-### Prerequisites
-
-Make sure the following are installed:
-
-- Node.js
-- npm
-- MongoDB database
+- Node.js and npm
+- MongoDB database (local MongoDB or MongoDB Atlas)
+- Cloudinary account for course image storage
 - Git
 
-### 1. Clone the Repository
+## Installation and Local Setup
+
+### 1. Clone the repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
-```
-
-Navigate into the project:
-
-```bash
+git clone <YOUR_GITHUB_REPOSITORY_URL>
 cd online-lecture-scheduler
 ```
 
-### 2. Backend Setup
-
-Navigate to the backend directory:
+### 2. Configure the Backend
 
 ```bash
 cd backend
-```
-
-Install dependencies:
-
-```bash
 npm install
 ```
 
-Create a `.env` file inside the backend folder:
+Create a `backend/.env` file with the following environment variables:
 
 ```env
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
+JWT_SECRET=your_long_random_jwt_secret
 
-ADMIN_PASSWORD=your_admin_password
-INSTRUCTOR_PASSWORD=your_instructor_password
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 ```
 
-Use the environment variable names expected by your `seed.js` file. Do not share actual passwords or database credentials publicly.
+Get the Cloudinary values from your Cloudinary account dashboard. Keep these values private and never commit the `.env` file.
 
-### 3. Create Demo Users
-
-Run the seed script to create the initial admin and instructor accounts:
-
-```bash
-npm run seed
-```
-
-Use the email addresses and passwords configured in your seed script when logging in.
-
-### 4. Start Backend Server
+Start the backend:
 
 ```bash
 npm run dev
 ```
 
-The backend server runs at:
+The local API will be available at:
 
 ```text
 http://localhost:5000
 ```
 
-### 5. Frontend Setup
+You can check the backend root endpoint at:
 
-Open another terminal and navigate to the frontend folder:
+```text
+http://localhost:5000/
+```
+
+### 3. Create Demo Accounts (If Needed)
+
+From the `backend` directory, run:
+
+```bash
+npm run seed
+```
+
+The seed script creates the demo account(s) configured in `seed.js` and skips accounts that already exist. Use the credentials configured for your seed setup. If the accounts already exist, use those existing credentials.
+
+### 4. Configure the Frontend
+
+Open another terminal:
 
 ```bash
 cd frontend
-```
-
-Install dependencies:
-
-```bash
 npm install
 ```
 
-Create a `.env` file inside the frontend folder:
+Create a `frontend/.env` file:
 
 ```env
 VITE_API_URL=http://localhost:5000
@@ -216,226 +184,168 @@ Start the frontend:
 npm run dev
 ```
 
-The frontend will usually run at:
+Open the local Vite URL shown in the terminal (commonly `http://localhost:5173`). Keep both the frontend and backend development servers running while testing.
+
+> Vite environment variables are read when the development server starts. Restart the frontend after changing `frontend/.env`.
+
+## Cloudinary Image Upload
+
+Course images are uploaded to Cloudinary instead of being stored on the backend server's local filesystem.
+
+The upload flow works as follows:
+
+1. The admin selects an image while creating a course.
+2. The frontend sends the course details and image as `multipart/form-data`.
+3. Multer processes the uploaded image using `multer-storage-cloudinary`.
+4. Cloudinary stores the image in the `coursedesk/courses` folder.
+5. The backend saves the resulting Cloudinary image URL in the course document in MongoDB.
+6. The frontend uses that URL to display the course image.
+
+The upload middleware allows the image formats configured in the backend and applies a 5 MB upload limit.
+
+The backend requires these environment variables:
+
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
+
+Cloudinary provides remote image hosting, so images are not dependent on the temporary filesystem of the Render service.
+
+**Note:** Existing course records that contain an old local image path such as `/uploads/...` are not automatically migrated. Upload the image again or update the old database record to use a Cloudinary URL.
+
+## API Reference
+
+All protected routes require this HTTP header:
 
 ```text
-http://localhost:5173
+Authorization: Bearer <JWT_TOKEN>
 ```
 
-Open this address in your browser to access CourseDesk.
+### Authentication
 
----
+| Method | Endpoint          | Access | Purpose                                                          |
+| ------ | ----------------- | ------ | ---------------------------------------------------------------- |
+| POST   | `/api/auth/login` | Public | Sign in with email and password; returns a JWT and user details. |
 
-## API Documentation
+Example request body:
 
-All backend APIs are served through the `/api` base path.
+```json
+{
+  "email": "admin@example.com",
+  "password": "your_password"
+}
+```
 
-### Authentication APIs
+### Instructors
 
-| Method | Endpoint          | Description                     |
-| ------ | ----------------- | ------------------------------- |
-| POST   | `/api/auth/login` | Login for admin and instructors |
+| Method | Endpoint               | Access | Purpose                       |
+| ------ | ---------------------- | ------ | ----------------------------- |
+| GET    | `/api/instructors`     | Admin  | Get the instructor list.      |
+| POST   | `/api/instructors/add` | Admin  | Create an instructor account. |
 
-### Instructor APIs
+Example request body:
 
-| Method | Endpoint               | Description          |
-| ------ | ---------------------- | -------------------- |
-| GET    | `/api/instructors`     | Get all instructors  |
-| POST   | `/api/instructors/add` | Add a new instructor |
+```json
+{
+  "name": "Amit Sharma",
+  "email": "amit@example.com",
+  "password": "choose_a_password"
+}
+```
 
-These endpoints require admin authorization.
+### Courses
 
-### Course APIs
+| Method | Endpoint           | Access             | Purpose                               |
+| ------ | ------------------ | ------------------ | ------------------------------------- |
+| GET    | `/api/courses`     | Authenticated user | Get all courses.                      |
+| GET    | `/api/courses/:id` | Authenticated user | Get a course by ID.                   |
+| POST   | `/api/courses/add` | Admin              | Create a course with an image upload. |
 
-| Method | Endpoint           | Description                   |
-| ------ | ------------------ | ----------------------------- |
-| GET    | `/api/courses`     | Get all courses               |
-| GET    | `/api/courses/:id` | Get a specific course         |
-| POST   | `/api/courses/add` | Create a course with an image |
+For `POST /api/courses/add`, send `multipart/form-data` using these fields:
 
-Course creation requires admin authorization.
+| Field         | Type       |
+| ------------- | ---------- |
+| `name`        | Text       |
+| `level`       | Text       |
+| `description` | Text       |
+| `image`       | Image file |
 
-### Lecture APIs
+The image field name must be `image` to match the backend upload route (`upload.single("image")`).
 
-| Method | Endpoint                    | Description                                       |
-| ------ | --------------------------- | ------------------------------------------------- |
-| GET    | `/api/lectures`             | Get all scheduled lectures                        |
-| POST   | `/api/lectures/add`         | Schedule a new lecture                            |
-| GET    | `/api/lectures/my-lectures` | Get lectures assigned to the logged-in instructor |
+### Lectures
 
-Lecture management requires admin authorization, while the personal lecture endpoint requires instructor authorization.
+| Method | Endpoint                    | Access     | Purpose                                                        |
+| ------ | --------------------------- | ---------- | -------------------------------------------------------------- |
+| GET    | `/api/lectures`             | Admin      | Get all scheduled lectures with course and instructor details. |
+| POST   | `/api/lectures/add`         | Admin      | Schedule a lecture.                                            |
+| GET    | `/api/lectures/my-lectures` | Instructor | Get lectures assigned to the logged-in instructor.             |
 
-Protected API requests use the following header:
+Example request body:
+
+```json
+{
+  "course": "MONGODB_COURSE_ID",
+  "batchName": "Morning Batch A",
+  "instructor": "MONGODB_INSTRUCTOR_ID",
+  "lectureDate": "2026-12-21"
+}
+```
+
+Replace the example IDs with actual MongoDB document IDs returned by the course and instructor APIs.
+
+## Instructor Date-Clash Prevention
+
+The lecture model stores the lecture date and a date-only value (`lectureDay`) in `YYYY-MM-DD` format.
+
+A unique compound MongoDB index is defined on:
+
+```js
+{ instructor: 1, lectureDay: 1 }
+```
+
+The API also checks whether the instructor already has a lecture on that date before creating a new one.
+
+This prevents an instructor from being assigned multiple lectures on the same calendar date, even if the course or batch is different. A scheduling conflict returns HTTP status `409`.
+
+## Deployment Configuration
+
+### Frontend – Vercel
+
+The frontend is deployed on Vercel.
+
+Set the following environment variable in the Vercel project:
+
+```env
+VITE_API_URL=https://online-lecture-scheduler-zq5m.onrender.com
+```
+
+Configure the Vercel project to use the `frontend` directory as its root directory and redeploy after changing environment variables.
+
+### Backend – Render
+
+The backend is deployed on Render.
+
+Configure the Render service to use the `backend` directory as its root directory.
+
+Typical commands:
 
 ```text
-Authorization: Bearer YOUR_JWT_TOKEN
+Build command: npm install
+Start command: npm start
 ```
 
----
+Set the following environment variables in the Render dashboard:
 
-## Lecture Scheduling and Conflict Prevention
-
-CourseDesk includes a scheduling validation system to prevent an instructor from being assigned more than one lecture on the same calendar date.
-
-When creating a lecture:
-
-1. The selected course is validated.
-2. The selected instructor is validated.
-3. The lecture date is checked.
-4. The system checks whether that instructor already has a lecture on the selected date.
-5. If a conflict exists, the request is rejected.
-6. Otherwise, the lecture is saved in MongoDB.
-
-A unique compound index is implemented in the Lecture model:
-
-```javascript
-lectureSchema.index({ instructor: 1, lectureDay: 1 }, { unique: true });
+```env
+MONGO_URI=your_production_mongodb_connection_string
+JWT_SECRET=your_production_jwt_secret
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 ```
 
-This provides database-level protection against duplicate instructor/date assignments.
+Set `PORT` only if required by the hosting provider. Render commonly provides it automatically.
 
----
+Configure backend CORS to allow the deployed Vercel frontend origin.
 
-## Database Models
-
-### User
-
-Stores:
-
-- Name
-- Email
-- Password (hashed)
-- Role (admin or instructor)
-
-### Course
-
-Stores:
-
-- Course name
-- Level
-- Description
-- Image path
-
-### Lecture
-
-Stores:
-
-- Course reference
-- Batch name
-- Instructor reference
-- Lecture date
-- Calendar date key (`lectureDay`)
-
----
-
-## Image Upload
-
-Course images are uploaded using Multer middleware and stored in the backend `uploads` directory during local development.
-
-The backend serves uploaded images through:
-
-```text
-/uploads
-```
-
-For production hosting, configure persistent image storage so uploaded images remain available after server restarts.
-
----
-
-## Running the Application
-
-Run the backend and frontend in separate terminals.
-
-**Terminal 1 – Backend**
-
-```bash
-cd backend
-npm run dev
-```
-
-**Terminal 2 – Frontend**
-
-```bash
-cd frontend
-npm run dev
-```
-
----
-
-## Production Build
-
-To generate an optimized frontend build:
-
-```bash
-cd frontend
-npm run build
-```
-
-The generated production files will be available in the `frontend/dist` directory.
-
----
-
-## Deployment
-
-The application can be deployed using:
-
-- Frontend: Vercel
-- Backend: Render
-- Database: MongoDB Atlas
-- Image storage: Cloudinary or another persistent storage service
-
-For deployment:
-
-1. Push the source code to GitHub.
-2. Deploy the backend and configure its environment variables.
-3. Configure persistent course image storage.
-4. Deploy the frontend and set `VITE_API_URL` to the deployed backend URL.
-5. Configure CORS for the frontend domain.
-6. Test both admin and instructor login using the hosted application.
-
----
-
-## Application Links
-
-**Live Application:**  
-TO_BE_ADDED
-
-**Backend API:**  
-TO_BE_ADDED
-
-**GitHub Repository:**  
-TO_BE_ADDED
-
----
-
-## Demo Login Credentials
-
-**Admin Account**
-
-- Email: TO_BE_ADDED
-- Password: TO_BE_ADDED
-
-**Instructor Account**
-
-- Email: TO_BE_ADDED
-- Password: TO_BE_ADDED
-
-Replace these placeholders with dedicated demo account credentials before sharing the assignment. Do not publish private or reused passwords.
-
----
-
-## Assignment Submission
-
-The following deliverables can be provided along with the application:
-
-- Hosted application URL
-- Admin login credentials
-- Instructor login credentials
-- Source code repository
-- Database dump
-- Screen recording demonstrating the application
-- Project documentation
-
----
-
-**CourseDesk – Manage learning. Simplify scheduling.**
+Do not upload `.env` files or expose database connection strings, JWT secrets, or Cloudinary API
